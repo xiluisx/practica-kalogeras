@@ -32,6 +32,6 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: ${{ steps.set_subject.outputs.subject }}
-          to: 'luis.velasco@iteso.mx'
+          to: 'carlos.muniz@iteso.mx'
           from: 'Andrea Rojo de la Vega'
           body: "Se han realizado cambios en la rama ${{ github.ref_name }}. Revisa los cambios recientes en el repositorio."
