@@ -1,0 +1,37 @@
+name: Send Email Notification
+
+on:
+  push:
+    branches:
+      - '**'  # Escucha en cualquier rama para enviar correos
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set email subject based on branch
+        id: set_subject
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "::set-output name=subject::Changes pushed to MAIN branch"
+          elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+            echo "::set-output name=subject::Changes pushed to DEV branch"
+          else
+            echo "::set-output name=subject::Changes pushed to ${GITHUB_REF#refs/heads/} branch"
+          fi
+
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3.12.0
+        with:
+          server_address: smtp.example.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: ${{ steps.set_subject.outputs.subject }}
+          to: 'luis.velasco@iteso.mx'
+          from: 'Andrea Rojo de la Vega'
+          body: "Se han realizado cambios en la rama ${{ github.ref_name }}. Revisa los cambios recientes en el repositorio."
