@@ -1,14 +1,10 @@
 pipeline {
     agent any
-
-    triggers {
-        githubPush() // Se activa con cada push a GitHub
-    }
-
+    
     stages {
-        stage('Trigger from GitHub') {
+        stage('Hello') {
             steps {
-                echo 'Pipeline triggered by GitHub push'
+                echo 'Hola Mundo desde Jenkins!'
             }
         }
     }
